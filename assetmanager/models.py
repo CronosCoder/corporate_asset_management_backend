@@ -27,7 +27,7 @@ class Employee(models.Model):
         return f'{self.name}'
     
 
-class Distriute(models.Model):
+class Distribute(models.Model):
     asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     provide_conditions = models.TextField()
