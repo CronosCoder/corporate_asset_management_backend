@@ -1,20 +1,33 @@
 from django.db import models
-from authentication.models import Company
+from django.conf import settings
 
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
 
+    def __str__(self) -> str:
+        return self.name
+    
+    class Meta:
+        ordering = ['name']
+
 
 class Asset(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category')
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='company')
-    price = models.DecimalField(max_digits=4, decimal_places=2)
-    buy_date = models.DateTimeField(auto_now_add=True)
+    price = models.PositiveIntegerField()
+    buy_date = models.DateField()
     warranty = models.DateField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category')
+    company = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='company')
+
+    def __str__(self) -> str:
+        return self.name
+    
+    class Meta:
+        ordering = ['name']
+
 
 class Employee(models.Model):
     name = models.CharField(max_length=255)
