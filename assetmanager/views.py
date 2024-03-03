@@ -3,17 +3,8 @@ from django.http import HttpResponse
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Category
-from .serializers import CategoryAssetCountSerializer
-
-
-# Create your views here.
-
-def sayhello(request):
-   return HttpResponse('Hello, world')
-
-class AssetViewSet(ModelViewSet):
-    pass
+from .models import Category,Asset
+from .serializers import CategoryAssetCountSerializer,GetAssetSerializer,AssetSerializer
 
 
 class CategoryView(APIView):
@@ -23,3 +14,13 @@ class CategoryView(APIView):
         serializer = CategoryAssetCountSerializer(categories, many=True)
         data = {category['name']: category['asset_count'] for category in serializer.data}
         return Response(data)
+
+class AssetViewSet(ModelViewSet):
+    def get_queryset(self):
+        company_id = self.request.user.id
+        return Asset.objects.filter(company__id=company_id).all()
+    
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return GetAssetSerializer
+        return AssetSerializer

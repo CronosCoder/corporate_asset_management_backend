@@ -1,11 +1,11 @@
-from django.urls import path
+from django.urls import path,include
 from rest_framework import routers
-from .views import sayhello, AssetViewSet,CategoryView
+from .views import AssetViewSet,CategoryView
 
-# router = routers.DefaultRouter()
-# router.register('assets', AssetViewSet , basename='assets')
+router = routers.DefaultRouter()
+router.register('assets', AssetViewSet , basename='assets')
 
 urlpatterns = [
-    path('', sayhello, name='hello'),
-    path('category/',CategoryView.as_view(),name='category')
+    path('category/',CategoryView.as_view(),name='category'),
+    path('',include(router.urls))
 ]

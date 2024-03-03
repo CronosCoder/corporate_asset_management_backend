@@ -21,7 +21,7 @@ class Asset(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='asset')
     company = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='asset')
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     
     class Meta:
