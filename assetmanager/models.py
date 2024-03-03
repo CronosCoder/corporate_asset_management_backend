@@ -34,17 +34,19 @@ class Employee(models.Model):
     description = models.TextField()
     salary = models.PositiveIntegerField()
     join_date = models.DateField()
+    company = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='employee',default=None)
 
     def __str__(self) -> str:
         return f'{self.name}'
     
 
-class Distriute(models.Model):
-    asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+class Distribute(models.Model):
+    asset = models.ForeignKey(Asset, on_delete=models.CASCADE,related_name='distribute')
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE,related_name='distribute')
     provide_conditions = models.TextField()
     return_conditions = models.TextField()
     provide_date = models.DateField()
     return_date = models.DateField()
+    company = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='distribute',default=None)
 
 

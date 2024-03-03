@@ -1,4 +1,5 @@
 from .models import *
+from datetime import date
 from rest_framework import serializers
 from authentication.models import Company
 
@@ -27,6 +28,7 @@ class CompanyNameSerializer(serializers.ModelSerializer):
 class GetAssetSerializer(serializers.ModelSerializer):
     category = CategoryNameSerializer(read_only=True)
     company = CompanyNameSerializer(read_only=True)
+    
     class Meta:
         model = Asset
         fields = ['id','name','description','price','buy_date','warranty','category','company']
@@ -35,3 +37,39 @@ class AssetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Asset
         fields = ['id','name','description','price','buy_date','warranty','category','company']
+
+class SimpleAssetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Asset
+        fields = ['id','name']
+
+'''Employee Serializer'''
+class GetEmployeeSerializer(serializers.ModelSerializer):
+    company = CompanyNameSerializer(read_only=True)
+    class Meta:
+        model = Employee
+        fields = ['id','name','designation','description','salary','join_date','company']
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = ['id','name','designation','description','salary','join_date','company']
+
+class SimpleEmployeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = ['id','name']
+
+'''Distribution Serializer'''
+class DistributionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Distribute
+        fields = ['asset','employee','provide_conditions','return_conditions','provide_date','return_date','company']
+
+class GetDistributionSerializer(serializers.ModelSerializer):
+    asset = SimpleAssetSerializer(read_only=True)
+    employee = SimpleEmployeeSerializer(read_only=True)
+    company = CompanyNameSerializer(read_only=True)
+    class Meta:
+        model = Distribute
+        fields = ['asset','employee','provide_conditions','return_conditions','provide_date','return_date','company']
