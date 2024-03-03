@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 
-
 class Category(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -19,8 +18,8 @@ class Asset(models.Model):
     price = models.PositiveIntegerField()
     buy_date = models.DateField()
     warranty = models.DateField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category')
-    company = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='company')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='asset')
+    company = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='asset')
 
     def __str__(self) -> str:
         return self.name
