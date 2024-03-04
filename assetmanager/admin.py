@@ -18,3 +18,10 @@ class AssetAdmin(admin.ModelAdmin):
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ['id','name','designation','company','salary']
     list_select_related = ['company']
+
+
+#----------Distribute Admin------------
+@admin.register(models.Distribute)
+class DistributeAdmin(admin.ModelAdmin):
+    list_display = ['asset','employee','company','returned','provide_date','return_date']
+    list_select_related = ['asset','employee','company']

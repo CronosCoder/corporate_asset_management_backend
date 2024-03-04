@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.db.models import Count,Sum
+from django.db.models.functions import TruncMonth
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -47,3 +47,53 @@ class DistributeViewSet(ModelViewSet):
         if self.request.method == 'GET':
             return GetDistributionSerializer
         return DistributionSerializer
+
+
+class DashboardView(APIView):
+    def get(self,request,format=None):
+        company_id = request.user.id
+
+        asset_query = Asset.objects.filter(company_id=company_id)
+        employee_query = Employee.objects.filter(company_id=company_id)
+        distribute_query = Distribute.objects.filter(company_id=company_id)
+
+        asset_count = asset_query.count()
+        employee_count = employee_query.count()
+        distributed_asset_count = distribute_query.count()
+        asset_price = asset_query.aggregate(total_price = Sum('price'))['total_price']
+        employee_salary = employee_query.aggregate(total_salary = Sum('salary'))['total_salary']
+
+        monthly_distribute = distribute_query.annotate(monthly=TruncMonth('provide_date')).values('monthly').annotate(monthly_distribute=Count('id')).values('monthly','monthly_distribute')
+        
+        distribute_data =  [
+            {'month':'January','total_distribute':0},
+            {'month':'February','total_distribute':0},
+            {'month':'March','total_distribute':0},
+            {'month':'April','total_distribute':0},
+            {'month':'May','total_distribute':0},
+            {'month':'June','total_distribute':0},
+            {'month':'July','total_distribute':0},
+            {'month':'August','total_distribute':0},
+            {'month':'September','total_distribute':0},
+            {'month':'October','total_distribute':0},
+            {'month':'November','total_distribute':0},
+            {'month':'December','total_distribute':0},
+        ]
+        
+        for data in monthly_distribute:
+            month = data['monthly'].strftime('%B')
+            count = data['monthly_distribute']
+
+            for d in distribute_data:
+                if d['month'] == month:
+                    d['month'] = month
+                    d['total_distribute'] = count
+
+        return Response({
+            "asset_count":asset_count,
+            "employee_count":employee_count,
+            "distributed_asset_count":distributed_asset_count,
+            "asset_price" : asset_price,
+            "employee_salary":employee_salary,
+            "monthly_distribute": distribute_data
+        })
