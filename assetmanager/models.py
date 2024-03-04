@@ -47,6 +47,7 @@ class Distribute(models.Model):
     return_conditions = models.TextField()
     provide_date = models.DateField()
     return_date = models.DateField()
+    returned = models.BooleanField(default=False)
     company = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='distribute',default=None)
 
 

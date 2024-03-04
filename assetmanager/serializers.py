@@ -24,7 +24,6 @@ class CompanyNameSerializer(serializers.ModelSerializer):
 
 
 ''' Asset Serializer'''
-
 class GetAssetSerializer(serializers.ModelSerializer):
     category = CategoryNameSerializer(read_only=True)
     company = CompanyNameSerializer(read_only=True)
@@ -64,12 +63,24 @@ class SimpleEmployeeSerializer(serializers.ModelSerializer):
 class DistributionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Distribute
-        fields = ['asset','employee','provide_conditions','return_conditions','provide_date','return_date','company']
+        fields = ['asset','employee','provide_conditions','return_conditions','provide_date','return_date','company','returned']
 
 class GetDistributionSerializer(serializers.ModelSerializer):
     asset = SimpleAssetSerializer(read_only=True)
     employee = SimpleEmployeeSerializer(read_only=True)
     company = CompanyNameSerializer(read_only=True)
+    status = serializers.SerializerMethodField()
+
+    def get_status(self,distribute:Distribute):
+        if  distribute.returned :
+            return 'Free'
+        else:
+            current_day = date.today()
+            if distribute.return_date < current_day:
+                return 'Due to return'
+            else:
+                return 'Using'
+
     class Meta:
         model = Distribute
-        fields = ['asset','employee','provide_conditions','return_conditions','provide_date','return_date','company']
+        fields = ['id','asset','employee','provide_conditions','return_conditions','provide_date','return_date','company','status']
