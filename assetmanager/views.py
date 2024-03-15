@@ -29,8 +29,9 @@ class AssetViewSet(ModelViewSet):
 
 class EmployeeViewSet(ModelViewSet):
     def get_queryset(self):
+        sort = self.request.GET['sort']
         company_id = self.request.user.id
-        return Employee.objects.filter(company__id=company_id).all()
+        return Employee.objects.filter(company__id=company_id).all().order_by(sort)
     
     def get_serializer_class(self):
         if self.request.method == 'GET':
