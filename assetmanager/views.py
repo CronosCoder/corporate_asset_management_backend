@@ -4,8 +4,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Category,Asset,Employee,Distribute
-from .serializers import CategoryAssetCountSerializer,GetAssetSerializer,AssetSerializer,GetEmployeeSerializer,EmployeeSerializer,GetDistributionSerializer,DistributionSerializer
-
+from .serializers import *
 
 class CategoryView(APIView):
    def get(self, request, format=None):
@@ -18,8 +17,9 @@ class CategoryView(APIView):
 
 class AssetViewSet(ModelViewSet):
     def get_queryset(self):
+        sort = self.request.GET['sort']
         company_id = self.request.user.id
-        return Asset.objects.filter(company__id=company_id).all()
+        return Asset.objects.filter(company__id=company_id).all().order_by(sort)
     
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -48,6 +48,13 @@ class DistributeViewSet(ModelViewSet):
             return GetDistributionSerializer
         return DistributionSerializer
 
+
+class AssetDistributeHistory(APIView):
+    def get(self,request,format=None):
+        asset_id = request.GET['asset-id']
+        queryset = Distribute.objects.filter(asset__id = asset_id)
+        serializer = AssetDistHistSerializer(queryset,many=True)
+        return  Response(serializer.data)
 
 class DashboardView(APIView):
     def get(self,request,format=None):

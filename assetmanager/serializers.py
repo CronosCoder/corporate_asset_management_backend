@@ -84,3 +84,10 @@ class GetDistributionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Distribute
         fields = ['id','asset','employee','provide_conditions','return_conditions','provide_date','return_date','company','status']
+
+
+class AssetDistHistSerializer(serializers.ModelSerializer):
+    employee = SimpleEmployeeSerializer(read_only=True)
+    class Meta:
+        model = Distribute
+        fields = ['id','employee','provide_conditions','return_conditions','return_date','returned']
