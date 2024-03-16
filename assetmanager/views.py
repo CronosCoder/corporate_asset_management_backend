@@ -14,7 +14,6 @@ class CategoryView(APIView):
         data = {category['name']: category['asset_count'] for category in serializer.data}
         return Response(data)
 
-
 class AssetViewSet(ModelViewSet):
     def get_queryset(self):
         sort = self.request.GET.get('sort','id')
@@ -27,6 +26,12 @@ class AssetViewSet(ModelViewSet):
             return GetAssetSerializer
         return AssetSerializer
     
+class AssetDistributeHistory(APIView):
+    def get(self,request,format=None):
+        asset_id = request.GET['asset-id']
+        queryset = Distribute.objects.filter(asset__id = asset_id)
+        serializer = AssetDistHistSerializer(queryset,many=True)
+        return  Response(serializer.data)
 
 class EmployeeViewSet(ModelViewSet):
     def get_queryset(self):
@@ -39,6 +44,14 @@ class EmployeeViewSet(ModelViewSet):
             return GetEmployeeSerializer
         return EmployeeSerializer
 
+class UsedAssetHistoryView(APIView):
+    def get(self,request,format=None):
+        employeeId = request.GET['employeeId']
+        queryset = Distribute.objects.filter(employee__id = employeeId)
+        serializer = UsedAssetHistorySerializer(queryset,many=True)
+        return Response(serializer.data)
+
+
 
 class DistributeViewSet(ModelViewSet):
     def get_queryset(self):
@@ -49,14 +62,6 @@ class DistributeViewSet(ModelViewSet):
         if self.request.method == 'GET':
             return GetDistributionSerializer
         return DistributionSerializer
-
-
-class AssetDistributeHistory(APIView):
-    def get(self,request,format=None):
-        asset_id = request.GET['asset-id']
-        queryset = Distribute.objects.filter(asset__id = asset_id)
-        serializer = AssetDistHistSerializer(queryset,many=True)
-        return  Response(serializer.data)
 
 class DashboardView(APIView):
     def get(self,request,format=None):

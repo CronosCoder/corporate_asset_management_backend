@@ -91,3 +91,9 @@ class AssetDistHistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Distribute
         fields = ['id','employee','provide_conditions','return_conditions','return_date','returned']
+
+class UsedAssetHistorySerializer(serializers.ModelSerializer):
+    asset = SimpleAssetSerializer(read_only=True)
+    class Meta:
+        model = Distribute
+        fields = ['id','asset','provide_conditions','return_conditions','return_date','returned']
