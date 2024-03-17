@@ -3,6 +3,13 @@ from datetime import date
 from rest_framework import serializers
 from authentication.models import Company
 
+'''Company Serializer'''
+class CompanyNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ['id','name']
+
+'''Category Serializer'''
 class CategoryAssetCountSerializer(serializers.ModelSerializer):
     asset_count = serializers.SerializerMethodField()
     class Meta:
@@ -15,13 +22,7 @@ class CategoryAssetCountSerializer(serializers.ModelSerializer):
 class CategoryNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['name']
-
-class CompanyNameSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Company
-        fields = ['name']
-
+        fields = ['id','name']
 
 ''' Asset Serializer'''
 class GetAssetSerializer(serializers.ModelSerializer):
@@ -84,7 +85,6 @@ class GetDistributionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Distribute
         fields = ['id','asset','employee','provide_conditions','return_conditions','provide_date','return_date','company','status']
-
 
 class AssetDistHistSerializer(serializers.ModelSerializer):
     employee = SimpleEmployeeSerializer(read_only=True)

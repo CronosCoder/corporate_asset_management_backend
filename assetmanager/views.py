@@ -51,8 +51,6 @@ class UsedAssetHistoryView(APIView):
         serializer = UsedAssetHistorySerializer(queryset,many=True)
         return Response(serializer.data)
 
-
-
 class DistributeViewSet(ModelViewSet):
     def get_queryset(self):
         company_id = self.request.user.id
