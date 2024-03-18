@@ -53,8 +53,9 @@ class UsedAssetHistoryView(APIView):
 
 class DistributeViewSet(ModelViewSet):
     def get_queryset(self):
+        sort = self.request.GET.get('sort','id')
         company_id = self.request.user.id
-        return Distribute.objects.filter(company__id=company_id).all()
+        return Distribute.objects.filter(company__id=company_id).all().order_by(sort)
     
     def get_serializer_class(self):
         if self.request.method == 'GET':
