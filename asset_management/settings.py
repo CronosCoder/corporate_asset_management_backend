@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'corsheaders',
+    'drf_spectacular',
     #Internal
     'assetmanager',
     'authentication',
@@ -108,6 +109,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 SIMPLE_JWT = {
@@ -119,4 +121,11 @@ DJOSER = {
     'SERIALIZERS': {
         'user_create': 'authentication.serializers.UserCreateSerializer'
     }
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Asset Pulse Project API',
+    'DESCRIPTION': 'This is a corporate asset management system named Asset Pulse api. All the assets and employees will be maintain by this api.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }

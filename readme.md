@@ -4,6 +4,10 @@
 This is a very simple corporate asset management system. Here Companies can create account and manage their assets with the employees.
 
 
+## API Home Page
+
+![App Screenshot](https://i.ibb.co/DGDmTZj/Asset-Pulse-Project-API.png)
+
 ## Home Page
 
 ![App Screenshot](https://i.ibb.co/wggZw0c/Asset-Pulse.png)
@@ -26,14 +30,6 @@ This is a very simple corporate asset management system. Here Companies can crea
 
 
 ## Used Technologies
-
-#### ⏩ Frontend 
-- Javascript 
-- React
-- React Router Dom
-- Tailwind CSS
-- Shadcn
-
 #### ⏪ Backend
 - Python 
 - Django
@@ -42,10 +38,18 @@ This is a very simple corporate asset management system. Here Companies can crea
 - Simple JWT
 - MySQL
 
+#### ⏩ Frontend 
+- Javascript 
+- React
+- React Router Dom
+- Tailwind CSS
+- Shadcn
+
 
 
 ## 🔗 Links
-- [Live Link](https://asset-pulse.netlify.app/)
+- [Frontend Live Link](https://asset-pulse.netlify.app/)
+- [API Live Link](https://corporateasset.pythonanywhere.com/)
 - [Frontend Code Link](https://github.com/foysalmia/corporate-asset-management-frontend)
 - [Backend Code Link](https://github.com/foysalmia/corporate_asset_management_backend)
 
